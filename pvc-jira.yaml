@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-jira-data
+  namespace: jira
+  labels:
+    app: postgres-jira
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jira-pvc-shared
+  namespace: jira
+  labels:
+    app: app-jira
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

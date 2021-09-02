@@ -1,0 +1,142 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app-jira
+  name: app-jira
+  namespace: jira
+  annotations:
+    haproxy.org/check: "true"
+    haproxy.org/forwarded-for: "false"
+    haproxy.org/load-balance: "roundrobin"
+    haproxy.org/cookie-persistence: "mycookie"
+spec:
+  selector:
+    app: app-jira
+  ports:
+  - name: port-jira
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: app-jira
+  name: app-jira
+  namespace: jira
+spec:
+  serviceName: "app-jira"
+  replicas: 1 #2
+  # kubectl scale statefulset/app-jira --replicas=2 -n jira
+  selector:
+    matchLabels:
+      app: app-jira
+  template:
+    metadata:
+      labels:
+        app: app-jira
+    spec:
+      initContainers:
+        - name: jira-sleep
+          image: busybox
+          command: ["sleep", "60"]
+        - name: jira-home
+          image: busybox
+          command: ["chown", "2001:2001", "-R", "/var/atlassian/application-data/jira/"]
+          volumeMounts:
+            - mountPath: "/var/atlassian/application-data/jira"
+              name: jira-pvc-data
+        - name: jira-shared
+          image: busybox
+          command: ["chown", "-R", "2001:2001", "/var/atlassian/shared"]
+          volumeMounts:
+            - mountPath: "/var/atlassian/shared"
+              name: jira-pvc-shared
+      containers:
+      - image: atlassian/jira-software:8.19.0-ubuntu
+        imagePullPolicy: Always
+        resources:
+           requests:
+             memory: "4G"
+             cpu: 2
+           limits:
+             memory: "6G"
+             cpu: 4
+        name: app-jira
+        env:
+           - name: ATL_JDBC_URL
+             value: "jdbc:postgresql://jira-db-postgres:5432/jira"
+           - name: ATL_JDBC_PASSWORD
+             value: "jira"
+           - name: ATL_JDBC_USER
+             value: "jira"
+           - name: ATL_DB_DRIVER
+             value: "org.postgresql.Driver"
+           - name: ATL_DB_TYPE
+             value: "postgres72"
+           - name: ATL_DB_SCHEMA_NAME
+             value: "public"
+           - name: JVM_MINIMUM_MEMORY
+             value: 4096m
+           - name: JVM_MAXIMUM_MEMORY
+             value: 4906m
+           - name: ATL_PROXY_NAME
+             value: jira.kubernetes.local
+             # jira.company.com
+           - name: ATL_TOMCAT_SCHEME
+             value: https
+             # https
+           - name: ATL_TOMCAT_SECURE
+             value: "true"
+             # Value = "true
+           - name: CLUSTERED
+             value: "true"
+           - name: JIRA_SHARED_HOME
+             value: "/var/atlassian/shared"
+           - name: SDOMAIN
+             value: .app-jira
+           - name: NODE_ID
+             valueFrom:
+               fieldRef:
+                 fieldPath: metadata.name
+           - name: JIRA_NODE_ID
+             valueFrom:
+               fieldRef:
+                 fieldPath: metadata.name
+           - name: EHCACHE_LISTENER_HOSTNAME
+             valueFrom:
+               fieldRef:
+                 fieldPath: status.podIP
+           - name: EHCACHE_LISTENER_PORT
+             value: "40001"
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /status
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          successThreshold: 2
+          failureThreshold: 2
+          timeoutSeconds: 5
+        ports:
+          - containerPort: 8080
+            name: jiraport
+          - containerPort: 40001
+            name: jiraclusterport
+        volumeMounts:
+        - name: jira-pvc-data
+          mountPath: "/var/atlassian/application-data/jira"
+        - name: jira-pvc-shared
+          mountPath: "/var/atlassian/shared"
+      volumes:
+        - name: jira-pvc-data
+          emptyDir:
+            {}
+        - name: jira-pvc-shared
+          persistentVolumeClaim:
+            claimName: jira-pvc-shared

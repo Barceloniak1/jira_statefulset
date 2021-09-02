@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jira-db-postgres  
+  labels:                 
+    app: jira-db-postgres
+  namespace: jira
+spec:
+  ports:
+  - name: port-db
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: jira-db-postgres
+
+---
+
+apiVersion:  apps/v1 
+kind: Deployment
+metadata:
+  name: jira-db-postgres
+  labels:
+    app: jira-db-postgres
+  namespace: jira
+spec:
+  selector:
+    matchLabels:
+      app: jira-db-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jira-db-postgres
+    spec:
+      containers:
+      - image: postgres:13.3
+        resources:
+           requests:
+             memory: "2G"
+             cpu: 1 #2
+           limits:
+             memory: "4G"
+             cpu: 4
+        name: postgres
+        env:
+          #  - name: POSTGRES_DB
+          #    value: "jira"
+           - name: POSTGRES_PASSWORD
+             value: "jira"
+           - name: POSTGRES_USER
+             value: "jira"
+           - name: PGDATA
+             value: /var/lib/postgresql/data/jira
+          #  - name: POSTGRES_HOST_AUTH_METHOD
+          #    value: "password" 
+        ports:
+        - containerPort: 5432
+          name: postgres-jira
+        volumeMounts:
+        - name: postgres-jira-data 
+          mountPath: "/var/lib/postgresql/data"
+      volumes:
+      - name: postgres-jira-data   
+        persistentVolumeClaim:
+          claimName: postgres-jira-data
