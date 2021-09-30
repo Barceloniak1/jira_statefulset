@@ -60,13 +60,13 @@ spec:
       containers:
       - image: atlassian/jira-software:8.19.0-ubuntu
         imagePullPolicy: Always
-        resources:
-           requests:
-             memory: "4G"
-             cpu: 1 #2
-           limits:
-             memory: "6G"
-             cpu: 2 #4
+        # resources:
+        #    requests:
+        #      memory: "4G"
+        #      cpu: 1 #2
+        #    limits:
+        #      memory: "6G"
+        #      cpu: 2 #4
         name: app-jira
         env:
            - name: ATL_JDBC_URL
