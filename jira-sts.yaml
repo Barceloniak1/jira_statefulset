@@ -114,15 +114,15 @@ spec:
                  fieldPath: status.podIP
            - name: EHCACHE_LISTENER_PORT
              value: "40001"
-        readinessProbe:
-          httpGet:
-            port: 8080
-            # path: /status
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          successThreshold: 2
-          failureThreshold: 2
-          timeoutSeconds: 5
+        # readinessProbe:
+        #   httpGet:
+        #     port: 8080
+        #     path: /status
+        #   initialDelaySeconds: 60
+        #   periodSeconds: 15
+        #   successThreshold: 2
+        #   failureThreshold: 2
+        #   timeoutSeconds: 5
         ports:
           - containerPort: 8080
             name: jiraport
