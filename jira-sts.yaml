@@ -63,10 +63,10 @@ spec:
         resources:
            requests:
              memory: "4G"
-             cpu: 2
+             cpu: 1 #2
            limits:
              memory: "6G"
-             cpu: 4
+             cpu: 2 #4
         name: app-jira
         env:
            - name: ATL_JDBC_URL
