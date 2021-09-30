@@ -117,7 +117,7 @@ spec:
         readinessProbe:
           httpGet:
             port: 8080
-            path: /status
+            # path: /status
           initialDelaySeconds: 60
           periodSeconds: 15
           successThreshold: 2
