@@ -15,3 +15,5 @@ Useful log files in Jira
 | `/opt/atlassian/jira/logs/catalina.20XX-XX-XX.log` | Tomcat application server stdout |
 | `/opt/atlassian/jira/logs/atlassian-jira-gc.20XX-XX-XX.log` | Garbage collection log |
 | `/opt/atlassian/jira/logs/access_log.20XX-XX-XX` | HTTP access log (tomcat) |
+
+More here : https://confluence.atlassian.com/jirakb/useful-log-files-in-jira-1027120387.html
