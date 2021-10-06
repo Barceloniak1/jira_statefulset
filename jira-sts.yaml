@@ -69,6 +69,7 @@ spec:
         #      cpu: 2 #4
         name: app-jira
         env:
+            #Database
            - name: ATL_JDBC_URL
              value: "jdbc:postgresql://jira-db-postgres:5432/jira"
            - name: ATL_JDBC_PASSWORD
@@ -81,19 +82,21 @@ spec:
              value: "postgres72"
            - name: ATL_DB_SCHEMA_NAME
              value: "public"
-           - name: JVM_MINIMUM_MEMORY
+             #JAVA Memory / Heap Size
+           - name: JVM_MINIMUM_MEMORY             #The minimum heap size of the JVM (default: 384m)
              value: 4096m
-           - name: JVM_MAXIMUM_MEMORY
+           - name: JVM_MAXIMUM_MEMORY             #The maximum heap size of the JVM (default: 768m)
              value: 4906m
            - name: ATL_PROXY_NAME
              value: jira.kubernetes.local
-             # jira.company.com
+            #Tomcat/Catalina options 
            - name: ATL_TOMCAT_SCHEME
-             value: https
-             # https
+             value: https                         #https
            - name: ATL_TOMCAT_SECURE
-             value: "true"
-             # Value = "true
+             value: "true"                        #value = "true"
+           - name: ATL_TOMCAT_PROTOCOL            #(default: HTTP/1.1)
+             value: "org.apache.coyote.http11.Http11AprProtocol"
+             #DataCenter Configuration             
            - name: CLUSTERED
              value: "true"
            - name: JIRA_SHARED_HOME
