@@ -17,3 +17,12 @@ Useful log files in Jira
 | `/opt/atlassian/jira/logs/access_log.20XX-XX-XX` | HTTP access log (tomcat) |
 
 More here : https://confluence.atlassian.com/jirakb/useful-log-files-in-jira-1027120387.html
+
+```
+Crucial locations 
+```
+
+| Location| Description |
+| --- | --- |
+| `/opt/atlassian/jira/conf` | server.xml; logging.properties, catalina.properties etc.  |
+| `/opt/atlassian/jira/bin` | setenev.sh, catalina.sh, user.sh, tcnative-1.dll |
