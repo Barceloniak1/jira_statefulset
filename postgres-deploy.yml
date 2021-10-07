@@ -54,6 +54,8 @@ spec:
              value: "jira"
            - name: PGDATA
              value: /var/lib/postgresql/data/jira
+           - name: POSTGRES_INITDB_ARGS
+             value: "--locale=en_US.UTF-8"             
           #  - name: POSTGRES_HOST_AUTH_METHOD
           #    value: "password" 
         ports:
