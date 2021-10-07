@@ -83,7 +83,7 @@ spec:
            - name: ATL_DB_SCHEMA_NAME
              value: "public"
            - name: POSTGRES_INITDB_ARGS             
-             value: "--locale=en_US.UTF-8"
+             value: "locale=en_US.UTF-8"
              #JAVA Memory / Heap Size
            - name: JVM_MINIMUM_MEMORY             #The minimum heap size of the JVM (default: 384m)
              value: 2048m
