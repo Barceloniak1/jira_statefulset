@@ -94,8 +94,8 @@ spec:
              value: https                         #https
            - name: ATL_TOMCAT_SECURE
              value: "true"                        #value = "true"
-           - name: ATL_TOMCAT_PROTOCOL            #(default: HTTP/1.1)
-             value: "org.apache.coyote.http11.Http11AprProtocol"
+          #  - name: ATL_TOMCAT_PROTOCOL            #(default: HTTP/1.1)
+          #    value: "org.apache.coyote.http11.Http11AprProtocol"
              #DataCenter Configuration             
            - name: CLUSTERED
              value: "true"
