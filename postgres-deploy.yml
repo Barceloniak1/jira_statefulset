@@ -46,8 +46,8 @@ spec:
              cpu: 2 #4
         name: postgres
         env:
-          #  - name: POSTGRES_DB
-          #    value: "jira"
+           - name: POSTGRES_DB
+             value: "jira"
            - name: POSTGRES_PASSWORD
              value: "jira"
            - name: POSTGRES_USER
