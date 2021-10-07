@@ -84,7 +84,7 @@ spec:
              value: "public"
              #JAVA Memory / Heap Size
            - name: JVM_MINIMUM_MEMORY             #The minimum heap size of the JVM (default: 384m)
-             value: 4096m
+             value: 2048m
            - name: JVM_MAXIMUM_MEMORY             #The maximum heap size of the JVM (default: 768m)
              value: 4906m
            - name: ATL_PROXY_NAME
