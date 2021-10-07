@@ -58,7 +58,7 @@ spec:
             - mountPath: "/var/atlassian/shared"
               name: jira-pvc-shared
       containers:
-      - image: atlassian/jira-software:8.19.0-ubuntu
+      - image: atlassian/jira-software:8.19.1
         imagePullPolicy: Always
         # resources:
         #    requests:
